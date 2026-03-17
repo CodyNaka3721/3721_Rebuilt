@@ -18,7 +18,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -30,6 +36,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
 public class RobotContainer {
+
+    private final SendableChooser<Command> autoChooser; 
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private final TurretSubsystem turret = new TurretSubsystem();
@@ -56,6 +64,16 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureBindings();
+        autoChooser = null;
+
+        /*autoChooser = AutoBuilder.buildAutoChooser();   //Setup for pathplanner auto maker thingy 
+        SmartDashboard.putData("Auto Mode", autoChooser);
+        //Append commands into pathplanner to use as eventmarkers 
+        //Use form: NamedCommands.registerCommand("Name", command)
+        NamedCommands.registerCommand("PivotDown", superstructure.setIntakePivotAngle(Degrees.of(107)));    //Registered pivot down command
+        autoChooser.setDefaultOption("Do Nothing", null);*/
+
+        
     }
 
     private void configureBindings() {
@@ -66,7 +84,8 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    //change if backward
             )
         );
 
@@ -93,55 +112,62 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
-
-        //Controlls the shooter with button a
+        /*
+         *Joystick Buttons  
+         */
+        //While pressing button A, spin shooter up to speed 
         joystick.a().onTrue(superstructure.shootCommand());
         joystick.a().onFalse(superstructure.stopShootCommand());
 
-        //Controlls the Basket with button b
+        //When button B pressed, feed balls into shooter 
         joystick.b().onTrue(superstructure.kickerFeedCommand().alongWith(superstructure.hopperFeedCommand()));
         joystick.b().onFalse(superstructure.kickerStopCommand().alongWith(superstructure.hopper.stopCommand()));
 
-        //Controlls the intake with button x
+        //When button x pressed, intake balls 
         joystick.x().onTrue(superstructure.intakeCommand());
         joystick.x().onFalse(superstructure.intakeStop());
-
+        
+        /*
+         * **************
+         * Board Buttons
+         * ************** 
+        */
+        //Shooter on 1
         board.button(1).onTrue(superstructure.shootCommand());
         board.button(1).onFalse(superstructure.stopShootCommand());
-
+        //Hooper+Kicker on 2
         board.button(2).onTrue(superstructure.kickerFeedCommand().alongWith(superstructure.hopperFeedCommand()));
         board.button(2).onFalse(superstructure.kickerStopCommand().alongWith(superstructure.hopper.stopCommand()));
+        //Intake on 10
+        board.button(10).onTrue(superstructure.intakeCommand());
+        board.button(10).onFalse(superstructure.intakeStop());
+        //Pivot down on 11+Pivot up on13
+        board.button(11).onTrue(superstructure.setIntakePivotAngle(Degrees.of(107)));
+        board.button(13).onTrue(superstructure.setIntakePivotAngle(Degrees.of(1)));
+        board.button(4).onTrue(superstructure.setIntakePivotAngle(Degrees.of(80)));
+        //Outtake on 12
+        board.button(12).onTrue(superstructure.ejectCommand());
+        board.button(12).onFalse(superstructure.ejectCommand());
+        
+        board.button(3).onTrue(superstructure.backFeedAllCommand());
+        board.button(3).onFalse(superstructure.backFeedAllCommand());
+  
 
-        board.button(3).onTrue(superstructure.intakeCommand());
-        board.button(3).onFalse(superstructure.intakeStop());
+        //joystick.leftBumper().onTrue(superstructure.AprilTrack());
+        joystick.leftBumper().onTrue(turret.trackAprilTag(9,10).until(() -> Math.abs(turret.getTagTx()) < 5.0));
+        
+        joystick.rightBumper().onTrue(turret.center());
+        
+        SmartDashboard.putNumber("limelight tx", turret.getTagTx());
+        //SmartDashboard.putNumber("Intake Arm Angle", intake.getIntakeAngle());
 
-        board.button(4).onTrue(superstructure.ejectCommand());
-        board.button(4).onFalse(superstructure.ejectCommand());
-
-        joystick.leftBumper().onTrue(superstructure.AprilTrack());
         /*
          * 107 degrees is the max to deploy the pivot
          * 0 is the pivot back in 
          */
-        joystick.povUp().onTrue(superstructure.setIntakePivotAngle(Degrees.of(107)));
-        joystick.povDown().onTrue(superstructure.setIntakePivotAngle(Degrees.of(1)));
+       // joystick.povUp().onTrue(superstructure.setIntakePivotAngle(Degrees.of(107)));
     }
     public Command getAutonomousCommand() {
-        // Simple drive forward auton
-        final var idle = new SwerveRequest.Idle();
-        return Commands.sequence(
-            // Reset our field centric heading to match the robot
-            // facing away from our alliance station wall (0 deg).
-            drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
-            // Then slowly drive forward (away from us) for 5 seconds.
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.5)
-                    .withVelocityY(0)
-                    .withRotationalRate(0)
-            )
-            .withTimeout(5.0),
-            // Finally idle for the rest of auton
-            drivetrain.applyRequest(() -> idle)
-        );
+        return null; //autoChooser.getSelected();
     }
 }

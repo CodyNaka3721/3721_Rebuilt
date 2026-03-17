@@ -4,10 +4,10 @@ import com.revrobotics.spark.SparkMax;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-
-
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
@@ -18,6 +18,9 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -67,7 +70,7 @@ public class IntakeSubsystem extends SubsystemBase {
   // 5:1, 5:1, 60/18 reduction
   private SmartMotorControllerConfig intakePivotSmartMotorConfig = new SmartMotorControllerConfig(this)
       .withControlMode(ControlMode.CLOSED_LOOP)
-      .withClosedLoopController(25, 0, 0, DegreesPerSecond.of(360), DegreesPerSecondPerSecond.of(360))
+      .withClosedLoopController(10, 0, 0, DegreesPerSecond.of(360), DegreesPerSecondPerSecond.of(360))
       .withFeedforward(new SimpleMotorFeedforward(0, 10, 0))
       .withTelemetry("IntakePivotMotor", TelemetryVerbosity.HIGH)
       .withGearing(new MechanismGearing(GearBox.fromReductionStages(5, 5, 60.0 / 18.0)))
@@ -165,10 +168,16 @@ public class IntakeSubsystem extends SubsystemBase {
     intakePivotController.setPosition(Degrees.of(148));
   }
 
+  /*public Angle getIntakeAngle(){
+    return intakePivotController.getMechanismPosition();
+  }*/
+
   @Override
   public void periodic() {
     intake.updateTelemetry();
     intakePivot.updateTelemetry();
+    
+    //Logger.recordOutput("IntakeAngle", intakePivotController.getMechanismPosition());
   }
 
   @Override

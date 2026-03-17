@@ -57,7 +57,7 @@ public class TurretSubsystem extends SubsystemBase {
   // ThriftyNova(Constants.TurretConstants.kMotorId);
 
   private static final String LIMELIGHT_NAME = "limelight";
-  private static final double TAG_TX_TOLERANCE_DEG = 1.0;
+  private static final double TAG_TX_TOLERANCE_DEG = 5.0;
   private static final double MAX_TRACK_STEP_DEG = 3.0;
 
   private TalonFX falcon = new TalonFX(Constants.TurretConstants.kMotorId);
@@ -68,7 +68,7 @@ public class TurretSubsystem extends SubsystemBase {
       .withFeedforward(new SimpleMotorFeedforward(0, 7.5, 0))
       .withTelemetry("TurretMotor", TelemetryVerbosity.HIGH)
       .withGearing(new MechanismGearing(GearBox.fromReductionStages(3, 10)))
-      .withMotorInverted(true)
+      .withMotorInverted(false)
       .withIdleMode(MotorMode.COAST)
       .withSoftLimit(Degrees.of(-MAX_ONE_DIR_FOV), Degrees.of(MAX_ONE_DIR_FOV))
       .withStatorCurrentLimit(Amps.of(10))
@@ -143,25 +143,27 @@ public class TurretSubsystem extends SubsystemBase {
     return LimelightHelpers.getTY(LIMELIGHT_NAME);  //Revert back later
   }
 
-  public Command trackAprilTag(int... validIds) {
+  public Command trackAprilTag(int... validIds) { //April Tag tracking 
+    /*
+     * Changed tag tracking logic, only uses tx for targeting and throws it into the turret move to angle command 
+     */
     return setAngleDynamic(() -> {
-      double currentDeg = turret.getAngle().in(Degrees);
-      
-      if (!hasDesiredTag(validIds)) {
-        return Degrees.of(currentDeg);
-      }
-
+      double currentDeg = turret.getAngle().in(Degrees); 
       double tx = getTagTx();
-
-      if (Math.abs(tx) < TAG_TX_TOLERANCE_DEG) {
-        return Degrees.of(currentDeg);
+      if(!hasDesiredTag(validIds) || Math.abs(tx) < TAG_TX_TOLERANCE_DEG){
+        return Degrees.of(currentDeg);  
       }
-
-      double correctionDeg = MathUtil.clamp(tx, -MAX_TRACK_STEP_DEG, MAX_TRACK_STEP_DEG);
-      double newSetpointDeg = currentDeg-correctionDeg; 
-
-      newSetpointDeg = MathUtil.clamp(newSetpointDeg, -MAX_ONE_DIR_FOV, MAX_ONE_DIR_FOV);
-      return Degrees.of(newSetpointDeg);
+      else{
+       //If Tx is greater than the angle, move turret to camera Tx angle 
+        double newSetpointDeg = tx; 
+        //newSetpointDeg = MathUtil.clamp(newSetpointDeg, -MAX_ONE_DIR_FOV, MAX_ONE_DIR_FOV); //Clamp the output 
+        return Degrees.of(-newSetpointDeg);  //Negative because neg is left but on turret its right 
+        
+      }     
+      //double correctionDeg = MathUtil.clamp(tx, -MAX_ONE_DIR_FOV, MAX_ONE_DIR_FOV);
+      //double newSetpointDeg = currentDeg - correctionDeg; //Check sign -> if tag to the right, subracting should move turret lft 
+      //newSetpointDeg = MathUtil.clamp(newSetpointDeg, -MAX_ONE_DIR_FOV, MAX_ONE_DIR_FOV);
+      //return Degrees.of(newSetpointDeg);  //Turret does incremental correction (test? remove if no work) 
     }).withName("Turret.TrackAprilTag");
   }
 
