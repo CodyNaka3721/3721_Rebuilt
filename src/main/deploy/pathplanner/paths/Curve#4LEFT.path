@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6175849731663683,
-        "y": 7.434221824686941
+        "x": 8.022636363636364,
+        "y": 4.694636363636364
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6175849731663683,
-        "y": 7.434221824686941
+        "x": 8.352454545454545,
+        "y": 6.725079545454546
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of Curve#3 LEFT"
     },
     {
       "anchor": {
-        "x": 7.831914132379248,
-        "y": 6.152415026833632
+        "x": 4.5080113636363635,
+        "y": 7.291954545454546
       },
       "prevControl": {
-        "x": 7.539856887298747,
-        "y": 7.904758497316639
+        "x": 6.713670454545454,
+        "y": 7.446556818181818
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
-      "waypointRelativePos": 0,
+      "name": "shooter",
+      "waypointRelativePos": 0.31238779174147213,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -55,7 +55,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -37,8 +37,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
 
-    private final SendableChooser<Command> autoChooser; 
-    private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+
+    private double MaxSpeed = 0.8 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed   Pretty sure this is it
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private final TurretSubsystem turret = new TurretSubsystem();
     private final ShooterSubsystem shooter = new ShooterSubsystem();
@@ -49,6 +49,7 @@ public class RobotContainer {
     private final Superstructure superstructure = new Superstructure(shooter, turret, intake, hopper, kicker);
 
     /* Setting up bindings for necessary control of the swerve drive platform */
+    public final CommandSwerveDrivetrain drivetrain=TunerConstants.createDrivetrain();
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
@@ -60,18 +61,35 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandJoystick board = new CommandJoystick(1);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    //public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final SendableChooser<Command> autoChooser ;
 
     public RobotContainer() {
         configureBindings();
-        autoChooser = null;
+        //autoChooser = null;
+        
+        NamedCommands.registerCommand("intake", superstructure.intakeCommand()); //Name : intake
+        NamedCommands.registerCommand("turret45", superstructure.setTurretLeft());//Name : turret45
+        NamedCommands.registerCommand("intakePivot107", superstructure.setIntakePivotAngle(Degrees.of(100))); //Name : intakePivot107
+        NamedCommands.registerCommand("intalePivot0", superstructure.setIntakePivotAngle(Degrees.of(0))); //Name : intakePivot0
+        NamedCommands.registerCommand("hopperKicker", superstructure.feedAllCommand()); //Name : hopperKicker
+        NamedCommands.registerCommand("shooter", superstructure.shootCommand()); //Name : shooter
+        NamedCommands.registerCommand("turret-90", superstructure.setTurret90R());
+        NamedCommands.registerCommand("turret-45", superstructure.setTurretRight());//Add more angles in super strucutre. search 60        Name ; turret-45
+        NamedCommands.registerCommand("stopShooter", superstructure.stopShootCommand());
+        NamedCommands.registerCommand("idleShoot", superstructure.idleCommand());
+        NamedCommands.registerCommand("stopFeedAll", superstructure.stopAllCommand());
+        NamedCommands.registerCommand("halfArm", superstructure.setIntakePivotAngle(Degrees.of(30)));
 
-        /*autoChooser = AutoBuilder.buildAutoChooser();   //Setup for pathplanner auto maker thingy 
+        autoChooser = AutoBuilder.buildAutoChooser();
+        //NamedCommands.registerCommand("PivotDown", superstructure.setIntakePivotAngle(Degrees.of(107)));    //Registered pivot down command
         SmartDashboard.putData("Auto Mode", autoChooser);
+
+        
         //Append commands into pathplanner to use as eventmarkers 
         //Use form: NamedCommands.registerCommand("Name", command)
-        NamedCommands.registerCommand("PivotDown", superstructure.setIntakePivotAngle(Degrees.of(107)));    //Registered pivot down command
-        autoChooser.setDefaultOption("Do Nothing", null);*/
+        
+        autoChooser.setDefaultOption("Do Nothing", null);
 
         
     }
@@ -84,7 +102,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
                     //change if backward
             )
         );
@@ -151,6 +169,7 @@ public class RobotContainer {
         
         board.button(3).onTrue(superstructure.backFeedAllCommand());
         board.button(3).onFalse(superstructure.backFeedAllCommand());
+
   
 
         //joystick.leftBumper().onTrue(superstructure.AprilTrack());
@@ -159,7 +178,7 @@ public class RobotContainer {
         joystick.rightBumper().onTrue(turret.center());
         
         SmartDashboard.putNumber("limelight tx", turret.getTagTx());
-        //SmartDashboard.putNumber("Intake Arm Angle", intake.getIntakeAngle());
+        SmartDashboard.putNumber("Intake Arm Angle", intake.getIntakeAngle().magnitude());
 
         /*
          * 107 degrees is the max to deploy the pivot
@@ -167,7 +186,7 @@ public class RobotContainer {
          */
        // joystick.povUp().onTrue(superstructure.setIntakePivotAngle(Degrees.of(107)));
     }
-    public Command getAutonomousCommand() {
-        return null; //autoChooser.getSelected();
+   public Command getAutonomousCommand() {
+        return new PathPlannerAuto("Curve Auto");// autoChooser.getSelected();
     }
 }

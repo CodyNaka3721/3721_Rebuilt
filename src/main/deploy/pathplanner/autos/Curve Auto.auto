@@ -1,0 +1,115 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Curve#1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Curve#2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "turret-90"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "hopperKicker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armHalf"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopFeedAll"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Curve#3LEFT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Curve#4LEFT"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "turret-90"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armHalf"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "hopperKicker"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

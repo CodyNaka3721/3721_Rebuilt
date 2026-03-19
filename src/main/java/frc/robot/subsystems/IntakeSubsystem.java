@@ -71,13 +71,13 @@ public class IntakeSubsystem extends SubsystemBase {
   private SmartMotorControllerConfig intakePivotSmartMotorConfig = new SmartMotorControllerConfig(this)
       .withControlMode(ControlMode.CLOSED_LOOP)
       .withClosedLoopController(10, 0, 0, DegreesPerSecond.of(360), DegreesPerSecondPerSecond.of(360))
-      .withFeedforward(new SimpleMotorFeedforward(0, 10, 0))
+      .withFeedforward(new SimpleMotorFeedforward(0.4, 10, 0))  //Added 0.5 kA
       .withTelemetry("IntakePivotMotor", TelemetryVerbosity.HIGH)
       .withGearing(new MechanismGearing(GearBox.fromReductionStages(5, 5, 60.0 / 18.0)))
       // .withGearing(new MechanismGearing(GearBox.fromReductionStages(5, 5, 60.0 /
       // 18.0, 42)))
       .withMotorInverted(false)
-      .withIdleMode(MotorMode.COAST)
+      .withIdleMode(MotorMode.BRAKE)
       .withSoftLimit(Degrees.of(0), Degrees.of(150))
       .withStatorCurrentLimit(Amps.of(10))
       .withClosedLoopRampRate(Seconds.of(0.1))
@@ -106,11 +106,13 @@ public class IntakeSubsystem extends SubsystemBase {
    * Command to run the intake while held.
    */
   public Command intakeCommand() {
-    return intake.set(INTAKE_SPEED).finallyDo(() -> smc.setDutyCycle(0)).withName("Intake.Run");
+    return Commands.runOnce(() -> smc.setDutyCycle(INTAKE_SPEED), this).withName("Intake.Run");
+    //return intake.set(INTAKE_SPEED).finallyDo(() -> smc.setDutyCycle(0)).withName("Intake.Run");
   }
 
   public Command intakeStop() {
-    return intake.set(0).finallyDo(() -> smc.setDutyCycle(0)).withName("Intake.Stop");
+    return Commands.runOnce(() -> smc.setDutyCycle(0), this).withName("Intake.Stop");
+    //return intake.set(0).finallyDo(() -> smc.setDutyCycle(0)).withName("Intake.Stop");
   }
 
   /**
@@ -168,9 +170,9 @@ public class IntakeSubsystem extends SubsystemBase {
     intakePivotController.setPosition(Degrees.of(148));
   }
 
-  /*public Angle getIntakeAngle(){
+  public Angle getIntakeAngle(){
     return intakePivotController.getMechanismPosition();
-  }*/
+  }
 
   @Override
   public void periodic() {

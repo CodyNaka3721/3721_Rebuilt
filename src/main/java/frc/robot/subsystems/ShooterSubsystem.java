@@ -24,6 +24,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import yams.gearing.GearBox;
@@ -101,7 +102,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public Command spinUp() {
-    return setSpeed(RPM.of(3000));
+    return Commands.runOnce(() -> smc.setVelocity(RPM.of(3000)), this).withName("Shooter.SpinUp");
+    //return setSpeed(RPM.of(3000));
 
     // return setSpeed(RotationsPerSecond.of(50));
 
@@ -122,7 +124,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
  
   public Command stopShootingCommand() {
-    return setSpeed(RPM.of(0));
+    return Commands.runOnce(() -> smc.setVelocity(RPM.of(0)), this).withName("Shooter.Stop"); 
     // return run(() -> {
 
     // // leaderNova.setPercent(0);
@@ -132,6 +134,9 @@ public class ShooterSubsystem extends SubsystemBase {
     // return shooter.set(0);
   }
 
+  public Command idleShootCommand() {
+    return Commands.runOnce(() -> smc.setVelocity(RPM.of(2000)), this).withName("Shooter.IdleSpeed"); 
+  }
   public AngularVelocity getSpeed() {
     return shooter.getSpeed();
   }

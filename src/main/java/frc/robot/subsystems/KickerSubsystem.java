@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import yams.gearing.GearBox;
@@ -59,14 +60,17 @@ public class KickerSubsystem extends SubsystemBase {
    * Command to run the kicker forward while held, stops when released.
    */
   public Command feedCommand() {
-    return kicker.set(KICKER_SPEED).finallyDo(() -> smc.setDutyCycle(1)).withName("Kicker.Feed");
+    return Commands.runOnce(() -> smc.setDutyCycle(KICKER_SPEED), this).withName("Kicker.Feed");
+    //return kicker.set(KICKER_SPEED).finallyDo(() -> smc.setDutyCycle(1)).withName("Kicker.Feed");
   }
 
   /**
    * Command to stop the kicker.
    */
   public Command stopCommand() {
-    return kicker.set(0).withName("Kicker.Stop");
+    return Commands.runOnce(() -> smc.setDutyCycle(0), this).withName("Kicker.Stop");
+    //return Commands.runOnce(() -> smc.setDutyCycle(0), this).withName("Kicker.Stop");
+    //return kicker.set(0).withName("Kicker.Stop");
   }
 
   @Override

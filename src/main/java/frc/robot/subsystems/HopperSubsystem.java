@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import yams.gearing.GearBox;
@@ -57,11 +58,13 @@ public class HopperSubsystem extends SubsystemBase {
    * Command to run the hopper forward while held.
    */
   public Command feedCommand() {
-    return hopper.set(HOPPER_SPEED).finallyDo(() -> smc.setDutyCycle(0)).withName("Hopper.Feed");
+    return Commands.runOnce(() -> smc.setDutyCycle(HOPPER_SPEED), this).withName("Hopper.Feed");
+    //return hopper.set(HOPPER_SPEED).finallyDo(() -> smc.setDutyCycle(0)).withName("Hopper.Feed");
   }
 
   public Command backFeedCommand() {
-    return hopper.set(-HOPPER_SPEED).finallyDo(() -> smc.setDutyCycle(0)).withName("Hopper.BackFeed");
+    return Commands.runOnce(() -> smc.setDutyCycle(-HOPPER_SPEED), this).withName("Hopper.BackFeed");
+    //return hopper.set(-HOPPER_SPEED).finallyDo(() -> smc.setDutyCycle(0)).withName("Hopper.BackFeed");
   }
 
   /**
@@ -75,7 +78,8 @@ public class HopperSubsystem extends SubsystemBase {
    * Command to stop the hopper.
    */
   public Command stopCommand() {
-    return hopper.set(0).withName("Hopper.Stop");
+    return Commands.runOnce(() -> smc.setDutyCycle(0), this).withName("Hopper.Stop");
+    //return hopper.set(0).withName("Hopper.Stop");
   }
 
   @Override

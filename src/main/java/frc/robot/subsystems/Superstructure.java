@@ -130,13 +130,16 @@ public class Superstructure extends SubsystemBase {
   }
 
   public Command setTurretForward() {
-    return turret.setAngle(Degrees.of(0)).withName("Superstructure.setTurretForward");
+    return turret.setAngle(Degrees.of(0)).withTimeout(1).withName("Superstructure.setTurretForward");
   }
 
   public Command setTurretLeft() {
-    return turret.setAngle(Degrees.of(45)).withName("Superstructure.setTurretLeft");
+    return turret.setAngle(Degrees.of(45)).withTimeout(1).withName("Superstructure.setTurretLeft");//Change angle for turrret here. try make more than one
   }
 
+  public Command setTurret90R(){
+    return turret.setAngle(Degrees.of(-90)).withTimeout(1).withName("Superstructure.setTurret90");
+  }
   public Command setTurretRight() {
     return turret.setAngle(Degrees.of(-45)).withName("Superstructure.setTurretRight");
   }
@@ -219,6 +222,12 @@ public class Superstructure extends SubsystemBase {
     return turret.center().withName("Superstructure.centerTurret");
   }
 
+  public Command setAngle90(){
+    return turret.setAngle(Degrees.of(90));
+  }
+ public Command setAngle90R(){
+  return turret.setAngle(Degrees.of(-90));
+ }
   public Command AprilTrack() {
     return turret.trackAprilTag(10).withName("Superstructure.AprilTrack");
   }
@@ -230,6 +239,10 @@ public class Superstructure extends SubsystemBase {
   }
   public Command stopShootCommand(){
   return shooter.stopShootingCommand().withName("Superstructure.stopShooter");
+  }
+
+  public Command idleCommand(){
+    return shooter.idleShootCommand().withName("SuperStrucutre.idleShoot");
   }
 
   public Command feedAllCommand() {
@@ -244,6 +257,13 @@ public class Superstructure extends SubsystemBase {
         hopper.backFeedCommand().asProxy(),
         intake.backFeedAndRollCommand().asProxy()).withName("Superstructure.backFeedAll");
   }
+  public Command stopAllCommand(){
+    return Commands.parallel(
+      hopper.stopCommand().asProxy(),
+      kicker.stopCommand().asProxy()).withName("Superstructure.stopAll");
+
+    
+    }
 
   // public Command intakeBounceCommand() {
   // return Commands.sequence(
@@ -267,7 +287,7 @@ public class Superstructure extends SubsystemBase {
    * Command to set the intake pivot angle.
    */
   public Command setIntakePivotAngle(Angle angle) {
-    return intake.setPivotAngle(angle).withName("Superstructure.setIntakePivotAngle");
+    return intake.setPivotAngle(angle).withTimeout(1).withName("Superstructure.setIntakePivotAngle");
   }
 
   public Command setIntakeDeployAndRoll() {
@@ -279,7 +299,7 @@ public class Superstructure extends SubsystemBase {
    */
   public Command shootCommand() {
     // return shooter.sysId().withName("Superstructure.shoot");
-    return shooter.spinUp().withName("Superstructure.shoot");
+    return shooter.spinUp().withName("Superstructure.SpinUp");
   }
 
   /**
