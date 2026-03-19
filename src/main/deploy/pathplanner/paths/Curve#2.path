@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.898954545454545,
-        "y": 4.313284090909091
+        "x": 7.847420454545453,
+        "y": 4.364818181818182
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.960795454545455,
-        "y": 5.704704545454546
+        "x": 7.909261363636363,
+        "y": 5.756238636363637
       },
       "isLocked": false,
       "linkedName": "End of Curve#1"
     },
     {
       "anchor": {
-        "x": 4.270954545454545,
-        "y": 7.333181818181819
+        "x": 3.982363636363636,
+        "y": 7.168272727272727
       },
       "prevControl": {
-        "x": 7.218704545454544,
-        "y": 7.559931818181819
+        "x": 6.930113636363635,
+        "y": 7.395022727272727
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,16 +29,23 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
-  "pointTowardsZones": [],
-  "eventMarkers": [
+  "constraintZones": [
     {
-      "name": "shooter",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": 1.0,
-      "command": null
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 5.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
     }
   ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

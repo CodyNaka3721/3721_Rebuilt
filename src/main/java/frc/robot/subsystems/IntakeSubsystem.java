@@ -71,7 +71,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private SmartMotorControllerConfig intakePivotSmartMotorConfig = new SmartMotorControllerConfig(this)
       .withControlMode(ControlMode.CLOSED_LOOP)
       .withClosedLoopController(10, 0, 0, DegreesPerSecond.of(360), DegreesPerSecondPerSecond.of(360))
-      .withFeedforward(new SimpleMotorFeedforward(0.4, 10, 0))  //Added 0.5 kA
+      .withFeedforward(new SimpleMotorFeedforward(0.65, 10, 0))  //Added 0.5 kA
       .withTelemetry("IntakePivotMotor", TelemetryVerbosity.HIGH)
       .withGearing(new MechanismGearing(GearBox.fromReductionStages(5, 5, 60.0 / 18.0)))
       // .withGearing(new MechanismGearing(GearBox.fromReductionStages(5, 5, 60.0 /
@@ -123,7 +123,8 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command setPivotAngle(Angle angle) {
-    return intakePivot.setAngle(angle).withName("IntakePivot.SetAngle");
+    return Commands.runOnce(() -> intakePivotController.setPosition(angle), this).withTimeout(5).withName("IntakePivot.SetAngle");
+    //return intakePivot.setAngle(angle).withName("IntakePivot.SetAngle");
   }
 
   public Command rezero() {

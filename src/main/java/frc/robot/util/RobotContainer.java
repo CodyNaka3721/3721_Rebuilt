@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -34,10 +35,14 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
+
 
 public class RobotContainer {
 
-
+    
     private double MaxSpeed = 0.8 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed   Pretty sure this is it
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private final TurretSubsystem turret = new TurretSubsystem();
@@ -68,10 +73,11 @@ public class RobotContainer {
         configureBindings();
         //autoChooser = null;
         
+
         NamedCommands.registerCommand("intake", superstructure.intakeCommand()); //Name : intake
         NamedCommands.registerCommand("turret45", superstructure.setTurretLeft());//Name : turret45
-        NamedCommands.registerCommand("intakePivot107", superstructure.setIntakePivotAngle(Degrees.of(100))); //Name : intakePivot107
-        NamedCommands.registerCommand("intalePivot0", superstructure.setIntakePivotAngle(Degrees.of(0))); //Name : intakePivot0
+        NamedCommands.registerCommand("intakePivot107", superstructure.setIntakePivotAngle(Degrees.of(150))); //Name : intakePivot107
+        NamedCommands.registerCommand("intakePivot0", superstructure.setIntakePivotAngle(Degrees.of(1))); //Name : intakePivot0
         NamedCommands.registerCommand("hopperKicker", superstructure.feedAllCommand()); //Name : hopperKicker
         NamedCommands.registerCommand("shooter", superstructure.shootCommand()); //Name : shooter
         NamedCommands.registerCommand("turret-90", superstructure.setTurret90R());
@@ -79,12 +85,14 @@ public class RobotContainer {
         NamedCommands.registerCommand("stopShooter", superstructure.stopShootCommand());
         NamedCommands.registerCommand("idleShoot", superstructure.idleCommand());
         NamedCommands.registerCommand("stopFeedAll", superstructure.stopAllCommand());
-        NamedCommands.registerCommand("halfArm", superstructure.setIntakePivotAngle(Degrees.of(30)));
+        NamedCommands.registerCommand("halfArm", superstructure.setIntakePivotAngle(Degrees.of(40)));
+        NamedCommands.registerCommand("stopEverything", superstructure.stopEverythingCommand());
 
         autoChooser = AutoBuilder.buildAutoChooser();
         //NamedCommands.registerCommand("PivotDown", superstructure.setIntakePivotAngle(Degrees.of(107)));    //Registered pivot down command
         SmartDashboard.putData("Auto Mode", autoChooser);
 
+        SmartDashboard.putNumber("Turret Angle", turret.getRawAngle().magnitude());
         
         //Append commands into pathplanner to use as eventmarkers 
         //Use form: NamedCommands.registerCommand("Name", command)
@@ -127,15 +135,15 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         
         // Reset the field-centric heading on left bumper press.
-        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        joystick.a().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
         /*
          *Joystick Buttons  
          */
         //While pressing button A, spin shooter up to speed 
-        joystick.a().onTrue(superstructure.shootCommand());
-        joystick.a().onFalse(superstructure.stopShootCommand());
+        //joystick.a().onTrue(superstructure.shootCommand());
+        //joystick.a().onFalse(superstructure.stopShootCommand());
 
         //When button B pressed, feed balls into shooter 
         joystick.b().onTrue(superstructure.kickerFeedCommand().alongWith(superstructure.hopperFeedCommand()));
@@ -170,10 +178,18 @@ public class RobotContainer {
         board.button(3).onTrue(superstructure.backFeedAllCommand());
         board.button(3).onFalse(superstructure.backFeedAllCommand());
 
-  
+        
 
         //joystick.leftBumper().onTrue(superstructure.AprilTrack());
-        joystick.leftBumper().onTrue(turret.trackAprilTag(9,10).until(() -> Math.abs(turret.getTagTx()) < 5.0));
+        if(DriverStation.getAlliance().isPresent()){
+            if(DriverStation.getAlliance().get() == Alliance.Red){
+                joystick.leftBumper().onTrue(turret.trackAprilTag(8,9,10,11).until(() -> Math.abs(turret.getTagTx()) < 5.0));
+            }
+            if(DriverStation.getAlliance().get() == Alliance.Blue){
+                joystick.leftBumper().onTrue(turret.trackAprilTag(24,25,26,27).until(() -> Math.abs(turret.getTagTx()) <5.0));
+            }  
+        }
+        
         
         joystick.rightBumper().onTrue(turret.center());
         

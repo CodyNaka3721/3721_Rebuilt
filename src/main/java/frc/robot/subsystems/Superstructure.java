@@ -283,6 +283,14 @@ public class Superstructure extends SubsystemBase {
         intake.deployAndRollCommand().asProxy()).withName("Superstructure.stopFeedingAll");
   }
 
+  public Command stopEverythingCommand(){
+    return Commands.parallel(
+      hopper.stopCommand().asProxy(),
+      kicker.stopCommand().asProxy(),
+      intake.intakeStop().asProxy(),
+      shooter.stopShootingCommand().asProxy()).withName("Superstructure.stopEverything");
+  }
+
   /**
    * Command to set the intake pivot angle.
    */

@@ -5,6 +5,18 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "intakePivot107"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Curve#1"
@@ -31,7 +43,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.75
           }
         },
         {
@@ -43,19 +55,31 @@
         {
           "type": "named",
           "data": {
-            "name": "armHalf"
+            "name": "halfArm"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 3.5
           }
         },
         {
           "type": "named",
           "data": {
             "name": "stopFeedAll"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "idleShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakePivot107"
           }
         },
         {
@@ -91,19 +115,25 @@
         {
           "type": "named",
           "data": {
-            "name": "armHalf"
+            "name": "hopperKicker"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "hopperKicker"
+            "name": "intakePivot0"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopEverything"
           }
         }
       ]
