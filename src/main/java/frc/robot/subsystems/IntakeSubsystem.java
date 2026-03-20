@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Volts;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
@@ -18,6 +19,7 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Pounds;
 import static edu.wpi.first.units.Units.RPM;
 import static edu.wpi.first.units.Units.Seconds;
+
 
 import org.littletonrobotics.junction.Logger;
 
@@ -123,7 +125,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Command setPivotAngle(Angle angle) {
-    return Commands.runOnce(() -> intakePivotController.setPosition(angle), this).withTimeout(5).withName("IntakePivot.SetAngle");
+    return Commands.run(() -> intakePivotController.setPosition(angle), this)
+    .withTimeout(1).
+    andThen(Commands.run(() -> intakePivotController.setVoltage(Volts.of(0.75)), this))
+    .withName("IntakePivot.setAngle");
+    //return Commands.runOnce(() -> intakePivotController.setPosition(angle), this).withTimeout(5).withName("IntakePivot.SetAngle");
     //return intakePivot.setAngle(angle).withName("IntakePivot.SetAngle");
   }
 

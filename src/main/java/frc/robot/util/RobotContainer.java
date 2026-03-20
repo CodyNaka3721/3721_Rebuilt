@@ -37,7 +37,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.GameDataUtil;
 
 
 public class RobotContainer {
@@ -82,12 +83,15 @@ public class RobotContainer {
         NamedCommands.registerCommand("shooter", superstructure.shootCommand()); //Name : shooter
         NamedCommands.registerCommand("turret-90", superstructure.setTurret90R());
         NamedCommands.registerCommand("turret-45", superstructure.setTurretRight());//Add more angles in super strucutre. search 60        Name ; turret-45
+        NamedCommands.registerCommand("turret90", superstructure.setTurret90());
         NamedCommands.registerCommand("stopShooter", superstructure.stopShootCommand());
         NamedCommands.registerCommand("idleShoot", superstructure.idleCommand());
         NamedCommands.registerCommand("stopFeedAll", superstructure.stopAllCommand());
         NamedCommands.registerCommand("halfArm", superstructure.setIntakePivotAngle(Degrees.of(40)));
         NamedCommands.registerCommand("stopEverything", superstructure.stopEverythingCommand());
-
+        NamedCommands.registerCommand("Auto Aim Red", turret.trackAprilTag(8,9,10,11).until(() -> Math.abs(turret.getTagTx()) < 5.0).withTimeout(2));
+        NamedCommands.registerCommand("Auto Aim Blue", turret.trackAprilTag(24,25,26,27).until(() -> Math.abs(turret.getTagTx()) < 5.0).withTimeout(3));
+        NamedCommands.registerCommand("Stop Intake", superstructure.intakeStop());
         autoChooser = AutoBuilder.buildAutoChooser();
         //NamedCommands.registerCommand("PivotDown", superstructure.setIntakePivotAngle(Degrees.of(107)));    //Registered pivot down command
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -98,10 +102,16 @@ public class RobotContainer {
         //Use form: NamedCommands.registerCommand("Name", command)
         
         autoChooser.setDefaultOption("Do Nothing", null);
-
+        setupSmartDashboard();
         
     }
 
+    private void setupSmartDashboard(){
+        SmartDashboard.putBoolean("Hub Active", GameDataUtil.isHubActive());
+        SmartDashboard.putNumber("Time Left in Shift", Math.round(GameDataUtil.getTimeLeftInShift() * 10)/10);
+        SmartDashboard.putString("Hub/Status", GameDataUtil.isHubActive() ? "ACTIVE" : "INACTIVE");
+        SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+    }
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -178,7 +188,15 @@ public class RobotContainer {
         board.button(3).onTrue(superstructure.backFeedAllCommand());
         board.button(3).onFalse(superstructure.backFeedAllCommand());
 
+        board.button(14).onTrue(superstructure.setTurret90R());
+        board.button(16).onTrue(superstructure.setTurret90());
+
+        //Manual Turret angles 
+        board.button(5).onTrue(superstructure.setAngle90R()); //Set to -90
+        board.button(6).onTrue(superstructure.setAngle90());    //Set to 90 degrees
         
+        //Pass Button 
+        board.button(7).onTrue(superstructure.passCommand());
 
         //joystick.leftBumper().onTrue(superstructure.AprilTrack());
         if(DriverStation.getAlliance().isPresent()){
@@ -188,6 +206,9 @@ public class RobotContainer {
             if(DriverStation.getAlliance().get() == Alliance.Blue){
                 joystick.leftBumper().onTrue(turret.trackAprilTag(24,25,26,27).until(() -> Math.abs(turret.getTagTx()) <5.0));
             }  
+        }
+        else{
+            joystick.leftBumper().onTrue(turret.trackAprilTag(8,9,10,11).until(() -> Math.abs(turret.getTagTx()) < 5.0));
         }
         
         
@@ -203,6 +224,7 @@ public class RobotContainer {
        // joystick.povUp().onTrue(superstructure.setIntakePivotAngle(Degrees.of(107)));
     }
    public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Curve Auto");// autoChooser.getSelected();
+        //return new PathPlannerAuto("Mid Depot");// 
+        return autoChooser.getSelected();   //Pick Autos off smartDash
     }
 }

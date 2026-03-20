@@ -143,6 +143,9 @@ public class Superstructure extends SubsystemBase {
   public Command setTurretRight() {
     return turret.setAngle(Degrees.of(-45)).withName("Superstructure.setTurretRight");
   }
+  public Command setTurret90(){
+    return turret.setAngle(Degrees.of(-90)).withTimeout(1).withName("Superstructure.setTurret90");
+  }
 
   // Getters for current state
   public AngularVelocity getShooterSpeed() {
@@ -288,6 +291,7 @@ public class Superstructure extends SubsystemBase {
       hopper.stopCommand().asProxy(),
       kicker.stopCommand().asProxy(),
       intake.intakeStop().asProxy(),
+      turret.center().asProxy(),
       shooter.stopShootingCommand().asProxy()).withName("Superstructure.stopEverything");
   }
 
@@ -310,6 +314,9 @@ public class Superstructure extends SubsystemBase {
     return shooter.spinUp().withName("Superstructure.SpinUp");
   }
 
+  public Command passCommand(){
+    return shooter.PassShoot().withName("Superstructure.Pass");
+  }
   /**
    * Command to stop shooting - stops shooter.
    */

@@ -19,25 +19,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Curve#1"
+            "pathName": "Curve#1LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Curve#2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "turret-90"
+            "pathName": "Curve#2LEFT"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "shooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "turret-90"
           }
         },
         {
@@ -61,7 +61,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.5
+            "waitTime": 3.0
           }
         },
         {
@@ -97,13 +97,13 @@
         {
           "type": "named",
           "data": {
-            "name": "turret-90"
+            "name": "shooter"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "shooter"
+            "name": "turret-90"
           }
         },
         {

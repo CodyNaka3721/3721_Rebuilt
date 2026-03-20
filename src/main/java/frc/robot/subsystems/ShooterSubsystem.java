@@ -122,7 +122,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
 
- 
+  public Command PassShoot(){
+    return Commands.runOnce(() -> smc.setVelocity(RPM.of(4500)), this).withName("Shooter.Pass");
+  }
   public Command stopShootingCommand() {
     return Commands.runOnce(() -> smc.setVelocity(RPM.of(0)), this).withName("Shooter.Stop"); 
     // return run(() -> {
