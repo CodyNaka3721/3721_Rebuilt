@@ -127,7 +127,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public Command setPivotAngle(Angle angle) {
     return Commands.run(() -> intakePivotController.setPosition(angle), this)
     .withTimeout(1).
-    andThen(Commands.run(() -> intakePivotController.setVoltage(Volts.of(0.75)), this))
+    andThen(Commands.run(() -> intakePivotController.setVoltage(Volts.of(2)), this))
     .withName("IntakePivot.setAngle");
     //return Commands.runOnce(() -> intakePivotController.setPosition(angle), this).withTimeout(5).withName("IntakePivot.SetAngle");
     //return intakePivot.setAngle(angle).withName("IntakePivot.SetAngle");

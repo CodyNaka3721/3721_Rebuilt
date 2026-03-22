@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.580397727272727,
-        "y": 0.7162045454545456
+        "x": 4.693534090909091,
+        "y": 1.056329545454546
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.580397727272727,
-        "y": 0.7162045454545456
+        "x": 5.858204545454545,
+        "y": 0.6028295454545471
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of Curve#2RIGHT"
     },
     {
       "anchor": {
-        "x": 7.734045454545454,
-        "y": 3.674261363636364
+        "x": 7.960795454545455,
+        "y": 4.179295454545454
       },
       "prevControl": {
-        "x": 10.042772727272727,
-        "y": -0.13926136363636354
+        "x": 10.063386363636363,
+        "y": 1.746886363636364
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End of Curve#1 RIGHT"
+      "linkedName": "End of Curve#3 RIGHT"
     }
   ],
   "rotationTargets": [],
@@ -37,15 +37,15 @@
         "y": 5.5
       },
       "rotationOffset": -90.0,
-      "minWaypointRelativePos": 0.3285457809694794,
-      "maxWaypointRelativePos": 0.5637342908438064,
+      "minWaypointRelativePos": 0.355475763016158,
+      "maxWaypointRelativePos": 0.4362657091561945,
       "name": "Point Towards Zone"
     }
   ],
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0.34237288135593236,
+      "waypointRelativePos": 0.3355932203389832,
       "endWaypointRelativePos": 1.0,
       "command": null
     }

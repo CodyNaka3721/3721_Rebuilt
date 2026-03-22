@@ -65,12 +65,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "intake",
       "waypointRelativePos": 0.3788150807899472,
       "endWaypointRelativePos": null,
@@ -90,7 +84,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "LEFT TRENCH",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

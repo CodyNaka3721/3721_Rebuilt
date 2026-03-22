@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.022636363636364,
-        "y": 4.694636363636364
+        "x": 7.9779427549195,
+        "y": 4.237817531305903
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.352454545454545,
-        "y": 6.725079545454546
+        "x": 7.049628476174989,
+        "y": 6.182671714912993
       },
       "isLocked": false,
       "linkedName": "End of Curve#3 LEFT"
     },
     {
       "anchor": {
-        "x": 4.260647727272727,
-        "y": 7.147659090909091
+        "x": 4.456477272727272,
+        "y": 7.075511363636363
       },
       "prevControl": {
-        "x": 6.466306818181818,
-        "y": 7.3022613636363625
+        "x": 6.961034090909091,
+        "y": 7.539318181818182
       },
       "nextControl": null,
       "isLocked": false,
@@ -66,7 +66,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "LEFT TRENCH",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0

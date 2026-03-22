@@ -7,19 +7,37 @@
         {
           "type": "named",
           "data": {
-            "name": "shooter"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mid #1"
+            "name": "intakePivot107"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Auto Aim Red"
+            "name": "intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Curve#1RIGHT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Curve#2RIGHT"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "turret90R"
           }
         },
         {
@@ -35,15 +53,15 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 3.0
+            "name": "halfArm"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "idleShoot"
+            "waitTime": 3.0
           }
         },
         {
@@ -55,31 +73,25 @@
         {
           "type": "named",
           "data": {
-            "name": "intakePivot107"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "idleShoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intake"
+            "name": "intakePivot107"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Mid#2"
+            "pathName": "Curve#3RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Mid #3"
+            "pathName": "Curve#4RIGHT"
           }
         },
         {
@@ -91,7 +103,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Aim Red"
+            "name": "turret90R"
           }
         },
         {
@@ -115,37 +127,13 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 3.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "stopShooter"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopFeedAll"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopEveything"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mid#4"
+            "name": "stopEverything"
           }
         }
       ]

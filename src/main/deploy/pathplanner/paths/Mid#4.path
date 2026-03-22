@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.879772727272727,
-        "y": 4.035
+        "x": 1.9828409090909087,
+        "y": 3.7257954545454552
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.879772727272727,
-        "y": 4.035
+        "x": 2.9828409090909087,
+        "y": 3.7257954545454552
       },
       "isLocked": false,
       "linkedName": "End of Mid#3"
     },
     {
       "anchor": {
-        "x": 3.137204545454545,
-        "y": 3.6212522361359563
+        "x": 3.1475113636363634,
+        "y": 3.9628522727272726
       },
       "prevControl": {
-        "x": 2.137204545454545,
-        "y": 3.6212522361359563
+        "x": 2.1475113636363634,
+        "y": 3.9628522727272726
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,10 +45,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "DEPOT",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 176.89
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

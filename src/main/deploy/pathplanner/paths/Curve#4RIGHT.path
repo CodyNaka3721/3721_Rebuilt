@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.457431818181818,
-        "y": 4.952306818181819
+        "x": 7.960795454545455,
+        "y": 4.179295454545454
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4574318181818184,
-        "y": 4.952306818181819
+        "x": 8.221323792486583,
+        "y": 2.0798389982110903
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of Curve#3 RIGHT"
     },
     {
       "anchor": {
-        "x": 1.8694659090909087,
-        "y": 4.952306818181819
+        "x": 4.703840909090909,
+        "y": 1.035715909090909
       },
       "prevControl": {
-        "x": 0.8694659090909087,
-        "y": 4.952306818181819
+        "x": 6.079570661896244,
+        "y": 0.06788908765652879
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -20.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "RIGHT TRENCH",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

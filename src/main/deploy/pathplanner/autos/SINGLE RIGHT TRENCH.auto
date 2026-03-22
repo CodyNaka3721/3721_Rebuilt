@@ -7,61 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "shooter"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mid #1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Auto Aim Red"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "hopperKicker"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "idleShoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopFeedAll"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "intakePivot107"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
           }
         },
         {
@@ -73,13 +19,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid#2"
+            "pathName": "Curve#1RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Mid #3"
+            "pathName": "Curve#2RIGHT"
           }
         },
         {
@@ -91,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Aim Red"
+            "name": "turret90R"
           }
         },
         {
@@ -109,19 +55,13 @@
         {
           "type": "named",
           "data": {
-            "name": "intakePivot0"
+            "name": "halfArm"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopShooter"
+            "waitTime": 3.0
           }
         },
         {
@@ -133,19 +73,19 @@
         {
           "type": "named",
           "data": {
-            "name": "stopEveything"
+            "name": "idleShoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Stop Intake"
+            "name": "intakePivot107"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "Mid#4"
+            "waitTime": 10.0
           }
         }
       ]

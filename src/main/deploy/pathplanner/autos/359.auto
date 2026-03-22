@@ -5,33 +5,39 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "intakePivot0"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Curve#2LEFT"
+            "pathName": "shoot right"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "turret-45"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooter"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "hopperKicker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopEverything"
           }
         }
       ]
